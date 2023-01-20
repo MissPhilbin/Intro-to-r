@@ -1,0 +1,17 @@
+library(tidyverse)
+library(arrow)
+PISA_2018 <- read_parquet(r"[/home/asb/Downloads/PISA_2018_student_subset.parquet]")
+
+PISA_2018$ST004D01T
+nrow(PISA_2018)
+
+length(unique(PISA_2018$OCOD1))
+length(unique(PISA_2018$OCOD2))
+
+max(PISA_2018$PV1SCIE, na.rm = TRUE)
+mean(PISA_2018$PV1SCIE, na.rm = TRUE)
+min(PISA_2018$PV1SCIE, na.rm = TRUE)
+median(PISA_2018$PV1SCIE, na.rm = TRUE)
+
+PISA_2018$ESCS
+mean(PISA_2018$ESCS, na.rm = TRUE)
