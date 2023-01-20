@@ -2,6 +2,12 @@ library(tidyverse)
 library(arrow)
 PISA_2018 <- read_parquet(r"[/home/asb/Downloads/PISA_2018_student_subset.parquet]")
 
+names(PISA_2018)       # gives the names of the columns
+nrow(PISA_2018)          # gives number of rows
+ncol(PISA_2018)          # gives number of columns
+PISA_2018$CNT          # returns column as a vector
+unique(PISA_2018$CNT)
+
 PISA_2018$ST004D01T
 nrow(PISA_2018)
 
@@ -15,3 +21,9 @@ median(PISA_2018$PV1SCIE, na.rm = TRUE)
 
 PISA_2018$ESCS
 mean(PISA_2018$ESCS, na.rm = TRUE)
+
+PISA_2018 %>% 
+  select(CNT, ESCS, ST004D01T, ST003D02T, PV1MATH) %>%
+  filter(ST004D01T == "Male",
+         ST003D02T %in% c("September", "October", "November", "December"),
+         PV1MATH > 750)
