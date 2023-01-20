@@ -1,0 +1,47 @@
+library(tidyverse)
+library(arrow)
+PISA_2018 <- read_parquet(r"[/home/.../Downloads/PISA_2018_student_subset.parquet]")
+
+PISA_2018 %>%
+  select(CNT, BELONG) #Selects Country from data set
+
+  select(ST003D02T, ST003D03T, ST004D01T) #Selects multiple e.g. Gender, Month of birth, etc
+  
+  select(CNTSTUID, ST004D01T, starts_with("IC15")) #Selects, country student ID, gender, and lists all questions starting with IC15
+
+# Using pipes and filters %>%
+  
+PISA_2018 %>%
+  select(CNT, ESCS) %>%
+  filter(CNT %in% c("France", "Belgium"),
+        ESCS < 0.1)
+
+read_low_female <- PISA_2018 %>%
+  select(CNT, ST004D01T, PV1READ) %>%
+  filter(PV1READ < 400,
+         ST004D01T == "Female",
+         CNT == "United Kingdom")
+
+read_low_male <- PISA_2018 %>%
+  select(CNT, ST004D01T, PV1READ) %>%
+  filter(PV1READ < 400,
+         ST004D01T == "Male",
+         CNT == "United Kingdom")
+
+print(nrow(read_low_female))
+print(nrow(read_low_male))
+
+# Group by
+
+PISA_2018 %>%
+  group_by(CNT) %>%
+  summarise(mean_escs = mean(ESCS, na.rm=TRUE),
+            median_escs = median(ESCS, na.rm=TRUE))
+
+country_sci <- PISA_2018 %>% 
+  group_by(CNT) %>%
+  summarise(sci_max  = max(PV1SCIE),
+            sci_mean = mean(PV1SCIE, na.rm = TRUE),
+            sci_min  = min(PV1SCIE))
+
+(print(country_sci))
